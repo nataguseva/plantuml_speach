@@ -1,0 +1,134 @@
+
+
+@startuml
+'https://plantuml.com/sequence-diagram
+<style>
+ ' scope to sequenceDiagram elements
+ sequenceDiagram {
+   ' scope to actor elements
+   note {
+       FontColor Red
+       FontSize 9
+       FontStyle Italic
+       Padding 50 100
+       Margin 12
+       BackgroundColor PapayaWhip
+       NoteBorderColor red
+       BorderThickness 50
+       Width 20
+   }
+ }
+ </style>
+
+skinparam maxMessageSize 100
+skinparam wrapWidth 300
+skinparam responseMessageBelowArrow true
+
+!$req_str_link = "/resources/delivery_route_full_request_valid.json"
+!$resp_str_200_link = "/resources/delivery_route_response_200.json"
+!$resp_rm_link = "/resources/route_from_pallets_response.json"
+
+!$GREEN = "#TECHNOLOGY"
+!$PINK = "#IMPLEMENTATION"
+!$BLUE = "#APPLICATION"
+!$PALE = "#STRATEGY"
+!$BISQ = "#BUSINESS"
+!$NAME = "POST v1/delivery-route-full"
+!$LINK = "https://space.samokat.ru/display/ECOMOPER/P72S06+REST+API+-+POST+v1-delivery-route-full"
+!$GEO_NAME = "GET geopoligons"
+!$GEO_LINK = "https://space.samokat.ru/pages/viewpage.action?pageId=3937654929"
+!$ROUTE_NAME = "POST routes-from-pallets"
+!$ROUTE_LINK = "https://space.samokat.ru/display/ECOMOPER/P72S01-POST-routes-from-pallets"
+!$START_ID = "start.objectId"
+!ND_ID = "object_id_end"
+!ND_GEO = "end.lat, end.lon"
+!$DM = "deliveryMethodId"
+autonumber 0 5
+participant api_gateway as gw
+participant calculation_strategy as strategy
+database strategy_db as DB
+participant SAM_geolocator as sam
+participant resources_map as rm
+database resources_map_db as rm_db
+
+gw -> strategy: [[$LINK request $NAME]]
+note left strategy
+комментарий к **%autonumber%**
+[[$req_str_link json]]
+'{{json
+'$req_str
+'}}
+end note
+activate strategy
+strategy->strategy: проверить запрос (обязательны  $START_ID, ND_GEO, $DM)
+alt $GREEN Запрос валидный
+strategy -> sam: [[$GEO_LINK request $GEO_NAME]]  ND_GEO
+activate sam
+sam --> strategy: [[$GEO_LINK response $GEO_NAME]]  array<poligon_id>
+deactivate sam
+strategy-> DB: array<poligon_id>,  $DM
+activate DB
+DB-->strategy: ND_ID
+deactivate DB
+strategy->rm: request [[$ROUTE_LINK $ROUTE_NAME]]  $START_ID, ND_ID
+activate rm
+rm->rm_db: $START_ID, ND_ID
+activate rm_db
+rm_db-->rm: pallet_route
+deactivate rm_db
+strategy<-rm: response [[$ROUTE_LINK $ROUTE_NAME]] pallet_route
+
+'rm->strategy: response [[$ROUTE_LINK $ROUTE_NAME]]  pallet_route
+deactivate rm
+note right strategy
+комментарий к **%autonumber%**
+[[$resp_rm_link json]]
+'{{json
+'$resp_rm
+'}}
+
+end note
+strategy->strategy: взять pallet_route  преобразовать ответ к шаблону
+note left
+комментарий к **%autonumber%**
+**ПРАВИЛА** преобразования ответа
+1. DISTRIBUTION_CENTER => distribution-center
+2. третий элемент атрибутов последнего шага
+{
+"name": "направление",
+"code": "002",
+"value": "2353246"
+}
+пока не делаем
+3. шаг последней мили генерируем
+{
+      "dr_id": 667272,
+      "type": "courier",
+      "attributes": []
+    }
+  ],
+  "last_delivery_point": {
+    "dc_code": "spb",
+    "dc_type": "distribution-center"
+  }
+4. в этих параметрах отдаем **null**
+"consolidation_pattern": null,
+"controlDeliveryDays": null
+end note
+
+note left strategy
+комментарий к **%autonumber%**
+[[$resp_str_200_link json]]
+end note
+strategy --> gw: [[$LINK response $NAME]]  ответ
+else $PINK
+alt $BLUE отсутствуют $START_ID || $DM
+strategy --> gw: [[$LINK response $NAME]]  400 "Bad request"
+else $PALE не переданы координаты
+strategy --> gw: [[$LINK response $NAME]]  400 "Coordinates must be provided"
+else $BLUE отсутствуют $START_ID || $DM
+strategy --> gw: [[$LINK response $NAME]]  400 "Bad request"
+end
+end
+deactivate strategy
+@enduml

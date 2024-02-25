@@ -1,0 +1,68 @@
+{
+  "full_route": [
+    {
+      "dr_id": 328313,
+      "type": "transit-city",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "kdr"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        }
+      ]
+    },
+    {
+      "dr_id": 362314,
+      "type": "transit",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "sha"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        }
+      ]
+    },
+    {
+      "dr_id": 688259,
+      "type": "transit-city",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "spb"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        },
+        {
+          "name": "направление",
+          "code": "002",
+          "value": "2353246"
+        }
+      ]
+    },
+    {
+      "dr_id": 688259,
+      "type": "courier",
+      "attributes": []
+    }
+  ],
+  "last_delivery_point": {
+    "dc_code": "spb",
+    "dc_type": "distribution-center"
+  },
+  "consolidation_pattern": null,
+  "controlDeliveryDays": null
+}

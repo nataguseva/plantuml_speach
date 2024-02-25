@@ -1,0 +1,14 @@
+{
+  "start": {
+    "objectId": "aer"
+  },
+  "end": {
+    "kladr": "78",
+    "lat": 59.938784,
+    "lon": 30.314997
+  },
+  "deliveryMethodId": 62,
+  "extraServices": [
+    "kgt"
+  ]
+}

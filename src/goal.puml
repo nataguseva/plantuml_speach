@@ -1,0 +1,198 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!$E = "\n"
+!$GREEN = "#TECHNOLOGY"
+!$PINK = "#IMPLEMENTATION"
+!$BLUE = "#APPLICATION"
+!$PALE = "#STRATEGY"
+!$BISQ = "#BUSINESS"
+!$NAME = "POST v1/delivery-route-full"
+!$LINK = "https://space.samokat.ru/display/ECOMOPER/P72S06+REST+API+-+POST+v1-delivery-route-full"
+!$GEO_NAME = "GET geopoligons"
+!$GEO_LINK = "https://space.samokat.ru/pages/viewpage.action?pageId=3937654929"
+!$ROUTE_NAME = "POST routes-from-pallets"
+!$ROUTE_LINK = "https://space.samokat.ru/display/ECOMOPER/P72S01-POST-routes-from-pallets"
+!$START_ID = "start.objectId"
+!$END_ID = "object_id_end"
+!$END_GEO = "end.lat, end.lon"
+!$DM = "deliveryMethodId"
+autonumber 0 5
+participant api_gateway as gw
+participant calculation_strategy as strategy
+database strategy_db as DB
+participant SAM_geolocator as sam
+participant resources_map as rm
+database resources_map_db as rm_db
+
+gw -> strategy: [[$LINK request $NAME]]
+note left
+комментарий к **%autonumber%**
+{
+  "endpoint": "v1/delivery-route",
+  "start": {
+    "objectId": "aer"
+  },
+  "end": {
+    "kladr": "78",
+    "lat": 59.938784,
+    "lon": 30.314997
+  },
+  "deliveryMethodId": 62,
+  "extraServices": ["kgt"]
+}
+end note
+activate strategy
+strategy->strategy: проверить запрос (обязательны $E $START_ID, $END_GEO, $DM)
+alt $GREEN Запрос валидный
+strategy -> sam: [[$GEO_LINK request $GEO_NAME]] $E $END_GEO
+activate sam
+sam --> strategy: [[$GEO_LINK response $GEO_NAME]] $E array<poligon_id>
+deactivate sam
+strategy-> DB: array<poligon_id>,  $DM
+activate DB
+DB-->strategy: $END_ID
+deactivate DB
+strategy->rm: request [[$ROUTE_LINK $ROUTE_NAME]] $E $START_ID, $END_ID
+activate rm
+rm->rm_db: $START_ID, $END_ID
+activate rm_db
+rm_db-->rm: pallet_route
+deactivate rm_db
+rm-->strategy: response [[$ROUTE_LINK $ROUTE_NAME]] $E pallet_route
+deactivate rm
+note right
+комментарий к **%autonumber%** [
+    {
+      "stepNum": 1,
+      "directionCode": pallets_for_route.direction_code,
+      "palletType": "TRANSIT_CITY"
+      "objectIdEnd": "kdr",
+      "objectIdEndType": "DISTRIBUTION_CENTER"
+    },
+    {
+      "stepNum": 2,
+      "directionCode": pallets_for_route.direction_code,
+      "palletType": "TRANSIT"
+      "objectIdEnd": "sha",
+      "objectIdEndType": "DISTRIBUTION_CENTER"
+    },
+    {
+          "stepNum": 3,
+          "directionCode": pallets_for_route.direction_code,
+          "palletType": "TRANSIT_CITY"
+          "objectIdEnd": "spb",
+          "objectIdEndType": "DISTRIBUTION_CENTER"
+        }
+]
+end note
+strategy->strategy: взять pallet_route $E преобразовать ответ к шаблону
+note left
+комментарий к **%autonumber%**
+**ПРАВИЛА** преобразования ответа
+1. DISTRIBUTION_CENTER => distribution-center
+2. третий элемент атрибутов последнего шага
+{
+"name": "направление",
+"code": "002",
+"value": "2353246"
+}
+пока не делаем
+3. шаг последней мили генерируем
+{
+      "dr_id": 667272,
+      "type": "courier",
+      "attributes": []
+    }
+  ],
+  "last_delivery_point": {
+    "dc_code": "spb",
+    "dc_type": "distribution-center"
+  }
+4. в этих параметрах отдаем **null**
+"consolidation_pattern": null,
+"controlDeliveryDays": null
+end note
+
+note right strategy
+комментарий к **%autonumber%**
+{
+  "full_route": [
+    {
+      "dr_id": 328313,
+      "type": "transit-city",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "kdr"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        }
+      ]
+    },
+    {
+      "dr_id": 362314,
+      "type": "transit",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "sha"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        }
+      ]
+    },
+    {
+      "dr_id": 688259,
+      "type": "transit-city",
+      "attributes": [
+        {
+          "name": "Код распределительного центра",
+          "code": "distribution_center_code",
+          "value": "spb"
+        },
+        {
+          "name": "Тип распределительного центра",
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        },
+        {
+          "name": "направление",
+          "code": "002",
+          "value": "2353246"
+        }
+      ]
+    },
+    {
+      "dr_id": 667272,
+      "type": "courier",
+      "attributes": []
+    }
+  ],
+  "last_delivery_point": {
+    "dc_code": "spb",
+    "dc_type": "distribution-center"
+  },
+  "consolidation_pattern": null,
+  "controlDeliveryDays": null
+}
+end note
+strategy --> gw: [[$LINK response $NAME]] $E ответ
+else $PINK
+alt $BLUE отсутствуют $START_ID || $DM
+strategy --> gw: [[$LINK response $NAME]] $E 400 "Bad request"
+else $PALE не переданы координаты
+strategy --> gw: [[$LINK response $NAME]] $E 400 "Coordinates must be provided"
+else $BLUE отсутствуют $START_ID || $DM
+strategy --> gw: [[$LINK response $NAME]] $E 400 "Bad request"
+end
+end
+deactivate strategy
+@enduml
