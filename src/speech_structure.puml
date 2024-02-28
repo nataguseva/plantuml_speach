@@ -12,6 +12,10 @@ title Документирование интеграций в виде sequence
 *** Арно Рокес: "поддержание документации в актуальном состоянии"
 *** какой инструмент используете для построения диаграмм?
 ** 2. обогащаем sequence
+*** добавляем переменные
+*** добавляем ссылки
+
+*** кастомизируем изображение [[https://plantuml-documentation.readthedocs.io/en/latest/formatting/all-skin-params.html#note All Skin Parameters]]
 ** 3. обзор аналогов
 *** Mermaid - написан на JavaScript
 ****: <img:vscode.png>

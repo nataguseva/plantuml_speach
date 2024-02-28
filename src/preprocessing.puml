@@ -2,27 +2,32 @@
 
 @startuml
 'https://plantuml.com/sequence-diagram
-<style>
- ' scope to sequenceDiagram elements
- sequenceDiagram {
-   ' scope to actor elements
-   note {
-       FontColor Red
-       FontSize 9
-       FontStyle Italic
-       Padding 50 100
-       Margin 12
-       BackgroundColor PapayaWhip
-       NoteBorderColor red
-       BorderThickness 50
-       Width 20
-   }
- }
- </style>
+'<style>
+' ' scope to sequenceDiagram elements
+' sequenceDiagram {
+'   ' scope to actor elements
+'   note {
+'       FontColor Red
+'       FontSize 9
+'       FontStyle Italic
+'       Padding 50 100
+'       Margin 12
+'       BackgroundColor PapayaWhip
+'       NoteBorderColor red
+'       BorderThickness 50
+'       Width 20
+'   }
+' }
+' </style>
 
-skinparam maxMessageSize 100
+skinparam maxMessageSize 150
 skinparam wrapWidth 300
 skinparam responseMessageBelowArrow true
+skinparam handwritten true
+skinparam NoteTextAlignment left
+skinparam NoteBorderColor Red
+skinparam SequenceArrowThickness 2
+
 
 !$req_str_link = "/resources/delivery_route_full_request_valid.json"
 !$resp_str_200_link = "/resources/delivery_route_response_200.json"
@@ -45,7 +50,11 @@ skinparam responseMessageBelowArrow true
 !$DM = "deliveryMethodId"
 autonumber 0 5
 participant api_gateway as gw
-participant calculation_strategy as strategy
+participant strategy [
+    calculation
+    ----
+    strategy
+]
 database strategy_db as DB
 participant SAM_geolocator as sam
 participant resources_map as rm
@@ -131,4 +140,8 @@ strategy --> gw: [[$LINK response $NAME]]  400 "Bad request"
 end
 end
 deactivate strategy
+@enduml
+
+@startuml
+help skinparams
 @enduml
