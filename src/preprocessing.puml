@@ -20,8 +20,8 @@
  }
  </style>
 
-skinparam maxMessageSize 100
-skinparam wrapWidth 300
+skinparam maxMessageSize 200
+skinparam wrapWidth 500
 skinparam responseMessageBelowArrow true
 
 !$req_str_link = "/resources/delivery_route_full_request_valid.json"
