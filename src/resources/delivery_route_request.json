@@ -1,0 +1,11 @@
+{
+  "start": {
+    "objectId": "msk"
+  },
+  "end": {
+    "kladr": "78",
+    "lat": 59.93123,
+    "lon": 30.31123
+  },
+  "deliveryMethod": "посылка"
+}

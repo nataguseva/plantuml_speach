@@ -27,6 +27,7 @@ skinparam responseMessageBelowArrow true
 !$req_str_link = "/resources/delivery_route_full_request_valid.json"
 !$resp_str_200_link = "/resources/delivery_route_response_200.json"
 !$resp_rm_link = "/resources/route_from_pallets_response.json"
+!$inv = %load_json("/resources/inventory.json")
 
 !$GREEN = "#TECHNOLOGY"
 !$PINK = "#IMPLEMENTATION"
@@ -50,6 +51,7 @@ database strategy_db as DB
 participant SAM_geolocator as sam
 participant resources_map as rm
 database resources_map_db as rm_db
+
 
 gw -> strategy: [[$LINK request $NAME]]
 note left strategy

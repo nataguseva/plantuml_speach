@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+autonumber
+
+
+
+
+
+participant api_gateway as gw
+participant strategy as strategy
+database strategy_db as DB
+participant geo_locator as geo_locator
+participant routes_map as rm
+
+gw -> strategy: request POST api/v1/delivery-route
+
+activate strategy
+strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
+alt позитивный сценарий
+strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
+activate geo_locator
+geo_locator --> strategy: return: array<poligon_id>
+deactivate geo_locator
+strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
+activate DB
+DB-->strategy: return: object_id_end with MIN(priority)
+deactivate DB
+strategy->rm: request POST api/v1/route (start.objectId, object_id_end)
+activate rm
+rm-->strategy: return: route
+deactivate rm
+alt маршрут возвращен
+strategy->strategy: взять route  преобразовать ответ к шаблону
+
+strategy --> gw:  response POST api/v1/delivery-route  ответ 200
+else маршрут не найден
+strategy --> gw:  response POST api/v1/delivery-route  404 "ROUTE_NOT_FOUND"
+end
+else отсутствуют start.objectId || deliveryMethod
+strategy --> gw:  response POST api/v1/delivery-route  400 "BAD_REQUEST"
+
+else  отсутствуют координаты
+strategy --> gw:  response POST api/v1/delivery-route  400 "COORDINATES_ARE_REQUIRED"
+end
+deactivate strategy
+@enduml
