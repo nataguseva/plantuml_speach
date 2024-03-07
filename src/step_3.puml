@@ -1,0 +1,144 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+autonumber
+
+skinparam maxmessagesize 150
+skinparam wrapWidth 250
+skinparam BoxPadding 50
+
+!$poligons = %load_json("/resources/poligons_variables.json")
+!import /resources.zip
+!include /resources/inventory.json
+
+
+box "Internal Service" #STRATEGY
+participant api_gateway as gw
+participant strategy as strategy
+database strategy_db as DB
+participant routes_map as rm
+end box
+
+box "External Service" #LightBlue
+participant geo_locator as geo_locator order 1
+end box
+
+note left: %load_json("/resources/inventory.json")
+
+gw -> strategy: [[https://nastachku.ru/ request POST api/v1/delivery-route]]
+note left strategy #aqua
+заметка к **%autonumber%**
+{
+  "start": {
+    "objectId": "msk"
+  },
+  "end": {
+    "kladr": "78",
+    "lat": 59.93123,
+    "lon": 30.31123
+  },
+  "deliveryMethod": "посылка"
+}
+end note
+activate strategy
+strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
+alt #TECHNOLOGY позитивный сценарий
+strategy -> geo_locator: [[$poligons.link request $poligons.endpoint (end.lat, end.lon)]]
+note left geo_locator #teal
+заметка к **%autonumber%**
+$poligons.endpoint/{lat}/{lon}
+end note
+
+activate geo_locator
+geo_locator --> strategy: return: array<poligon_id>
+note right geo_locator #teal
+заметка к **%autonumber%**
+{
+  "geoPoligons": [
+    "ddef3721-364f-4851-ab4e-f578908d01f9",
+    "153d3236-b65b-4ab3-9f74-f9977898ad53"
+  ]
+}
+end note
+deactivate geo_locator
+strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
+activate DB
+DB-->strategy: return: object_id_end with MIN(priority)
+deactivate DB
+strategy->rm: [[https://ul24.nastachku.ru/архитектура request POST api/v1/route (start.objectId, object_id_end)]]
+note left rm #coral
+заметка к **%autonumber%**
+{
+  "objectIdStart": "msk",
+  "objectIdEnd": "spb"
+}
+end note
+note right rm #coral
+заметка к **%autonumber%**
+{
+  "route": [
+    {
+      "stepNum": 1,
+      "code": 1234,
+      "objectIdEnd": "spb",
+      "objectIdEndType": "DISTRIBUTION_CENTER"
+      "duration": 720
+    }
+  ]
+}
+end note
+
+activate rm
+rm-->strategy: return: route
+deactivate rm
+alt #TECHNOLOGY маршрут возвращен
+strategy->strategy: взять route  преобразовать ответ к шаблону
+note right strategy #aqua
+заметка к **%autonumber%**
+{
+  "route": [
+    {
+      "code": 1234,
+      "attributes": [
+        {
+          "code": "distribution_center_code",
+          "value": "spb"
+        },
+        {
+          "code": "distribution_center_type",
+          "value": "distribution-center"
+        }
+      ]
+    }
+  ],
+  "last_delivery_point": {
+    "dc_code": "spb",
+    "dc_type": "distribution-center"
+  },
+  "controlDeliverytime": 720
+}
+end note
+strategy --> gw:  response POST api/v1/delivery-route  ответ 200
+else %lighten(IMPLEMENTATION, 5) маршрут не найден
+strategy --> gw:  response POST api/v1/delivery-route  404 "Not Found"
+note right strategy #aqua
+заметка к **%autonumber%**
+{
+  "error": "ROUTE_NOT_FOUND"
+}
+end note
+end
+else #IMPLEMENTATION отсутствуют start.objectId || deliveryMethod
+strategy --> gw:  response POST api/v1/delivery-route  400 "BAD_REQUEST"
+note right strategy #aqua
+заметка к **%autonumber%**
+{
+  "error": "BAD_REQUEST",
+  "details": "<fieldname> is required"
+}
+end note
+
+else  %darken(IMPLEMENTATION, 5) отсутствуют координаты
+strategy --> gw:  response POST api/v1/delivery-route  400 "COORDINATES_ARE_REQUIRED"
+end
+deactivate strategy
+@enduml
