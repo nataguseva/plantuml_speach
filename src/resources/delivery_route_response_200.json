@@ -2,21 +2,10 @@
   "route": [
     {
       "code": 1234,
-      "attributes": [
-        {
-          "code": "distribution_center_code",
-          "value": "spb"
-        },
-        {
-          "code": "distribution_center_type",
-          "value": "distribution-center"
-        }
-      ]
+      "stepNumber": 1,
+      "logObjectStart": "msk",
+      "logObjectEnd": "spb",
+      "controlDeliverytime": 720
     }
-  ],
-  "last_delivery_point": {
-    "dc_code": "spb",
-    "dc_type": "distribution-center"
-  },
-  "controlDeliverytime": 720
+  ]
 }

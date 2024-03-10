@@ -1,23 +1,22 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 autonumber
-
-skinparam maxmessagesize 250
-skinparam wrapWidth 350
-skinparam BoxPadding 50
+!include /resources/skinparams.puml
+!includesub /resources/variables.puml !VARIABLES
+!includesub poligons_api.puml !VARIABLES
 
 box "Internal Service" #STRATEGY
+
 participant api_gateway as gw
 participant strategy as strategy
 database strategy_db as DB
 participant routes_map as rm
 end box
 
-box "External Service" #LightBlue
-participant geo_locator as geo_locator order 1
-end box
 
-gw -> strategy: [[https://nastachku.ru/ request POST api/v1/delivery-route]]
+
+
+gw -> strategy: [[$DELIVERY_ROUTE_LINK request POST $DELIVERY_ROUTE_NAME]]
 note left strategy #aqua
 заметка к **%autonumber%**
 {
@@ -34,25 +33,10 @@ note left strategy #aqua
 end note
 activate strategy
 strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
-alt #TECHNOLOGY позитивный сценарий
-strategy -> geo_locator: [[https://ul24.nastachku.ru/системный-и-бизнес-анализ request GET api/v1/geopoligons(end.lat, end.lon)]]
-note left geo_locator #teal
-заметка к **%autonumber%**
-api/v1/geopoligons/{lat}/{lon}
-end note
+'includesub poligons_api.puml !ACTORS
+!includesub poligons_api.puml !POLIGONS_REQUEST
 
-activate geo_locator
-geo_locator --> strategy: return: array<poligon_id>
-note right geo_locator #teal
-заметка к **%autonumber%**
-{
-  "geoPoligons": [
-    "ddef3721-364f-4851-ab4e-f578908d01f9",
-    "153d3236-b65b-4ab3-9f74-f9977898ad53"
-  ]
-}
-end note
-deactivate geo_locator
+!includesub poligons_api.puml !POLIGONS_RESPONSE_200
 strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
 note right DB
 <img /resources/tables.png {scale=0.5}>
@@ -60,7 +44,7 @@ end note
 activate DB
 DB-->strategy: return: object_id_end with MIN(priority)
 deactivate DB
-strategy->rm: [[https://ul24.nastachku.ru/архитектура request POST api/v1/route (start.objectId, object_id_end)]]
+strategy->rm: [[$ROUTE_LINK request $ROUTE_NAME ]]
 note left rm #coral
 заметка к **%autonumber%**
 {
@@ -102,14 +86,61 @@ note right strategy #aqua
   ]
 }
 end note
-strategy --> gw:  response POST api/v1/delivery-route  ответ 200
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  ответ 200
 else %lighten(IMPLEMENTATION, 5) маршрут не найден
-strategy --> gw:  response POST api/v1/delivery-route  404 "Not Found"
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  404 "Not Found"
 note right strategy #aqua
 заметка к **%autonumber%**
 {
   "error": "ROUTE_NOT_FOUND"
 }
+end note
+end
+
+!includesub poligons_api.puml !POLIGONS_RESPONSE_EMPTY
+strategy --> gw: return: error_message, 200
+note right strategy
+ комментарий к **%autonumber%**
+ {
+   "error": {
+     "code": "GEO_SERVICE_ERROR",
+     "details": "geopolygons not found"
+   }
+ }
+ end note
+!includesub poligons_api.puml !POLIGONS_RESPONSE_UNAUTHORIZED
+ strategy --> gw: return: error_message, 200
+ note right strategy
+  комментарий к **%autonumber%**
+  {
+    "error": {
+      "code": "GEO_SERVICE_ERROR",
+      "details": "401:Unauthorized"
+    }
+  }
+  end note
+
+!includesub poligons_api.puml !POLIGONS_RESPONSE_BAD_REQUEST
+strategy --> gw: return: error_message, 200
+  note right strategy
+   комментарий к **%autonumber%**
+    {
+      "error": {
+        "code": "GEO_SERVICE_ERROR",
+        "details": "Bad request"
+      }
+    }
+   end note
+!includesub poligons_api.puml !POLIGONS_RESPONSE_INTERNAL_ERROR
+  strategy --> gw: return: error_message, 200
+ note right strategy
+   комментарий к **%autonumber%**
+   {
+     "error": {
+       "code": "GEO_SERVICE_ERROR",
+       "details": "Internal server error"
+     }
+   }
 end note
 end
 

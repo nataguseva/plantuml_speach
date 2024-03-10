@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!startsub VARIABLES
+!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
+!$DELIVERY_ROUTE_LINK = "https://nastachku.ru/"
+!$POLIGONS_NAME = "GET api/v1/geopoligons (end.lat, end.lon)"
+!$POLIGONS_LINK = "https://ul24.nastachku.ru/системный-и-бизнес-анализ"
+!$ROUTE_NAME = "POST api/v1/route(start.objectId, object_id_end)"
+!$ROUTE_LINK = "https://ul24.nastachku.ru/архитектура"
+!$var_json = {
+               "start": {
+                 "objectId": "msk"
+               },
+               "end": {
+                 "kladr": "78",
+                 "lat": 59.93123,
+                 "lon": 30.31123
+               },
+               "deliveryMethod": "посылка"
+             }
+!endsub
+foo->foo
+@enduml

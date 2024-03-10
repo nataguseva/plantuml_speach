@@ -4,7 +4,7 @@
       "stepNum": 1,
       "code": 1234,
       "objectIdEnd": "spb",
-      "objectIdEndType": "DISTRIBUTION_CENTER",
+      "objectEndType": "DISTRIBUTION_CENTER",
       "duration": 720
     }
   ]

@@ -2,10 +2,6 @@
 'https://plantuml.com/sequence-diagram
 autonumber
 
-
-
-
-
 participant api_gateway as gw
 participant strategy as strategy
 database strategy_db as DB
@@ -36,11 +32,6 @@ strategy --> gw:  response POST api/v1/delivery-route  ответ 200
 else маршрут не найден
 strategy --> gw:  response POST api/v1/delivery-route  404 "ROUTE_NOT_FOUND"
 end
-else отсутствуют start.objectId || deliveryMethod
-strategy --> gw:  response POST api/v1/delivery-route  400 "BAD_REQUEST"
 
-else  отсутствуют координаты
-strategy --> gw:  response POST api/v1/delivery-route  400 "COORDINATES_ARE_REQUIRED"
-end
 deactivate strategy
 @enduml

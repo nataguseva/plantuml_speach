@@ -1,16 +1,14 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 autonumber
-
-skinparam maxmessagesize 150
-skinparam wrapWidth 250
-skinparam BoxPadding 50
-
-!$poligons = %load_json("/resources/poligons_variables.json")
-!import /resources.zip
-!include /resources/inventory.json
-
-
+!include /resources/skinparams.puml
+'skinparam maxmessagesize 250
+'skinparam wrapWidth 350
+'skinparam BoxPadding 50
+'<style>
+'note { FontColor blue
+'      }
+'</style>
 box "Internal Service" #STRATEGY
 participant api_gateway as gw
 participant strategy as strategy
@@ -21,12 +19,18 @@ end box
 box "External Service" #LightBlue
 participant geo_locator as geo_locator order 1
 end box
+!include /resources/variables.puml
+'!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
+'!$DELIVERY_ROUTE_LINK = "https://nastachku.ru/"
+'!$POLIGONS_NAME = "GET api/v1/geopoligons (end.lat, end.lon)"
+'!$POLIGONS_LINK = "https://ul24.nastachku.ru/системный-и-бизнес-анализ"
+'!$ROUTE_NAME = "POST api/v1/route(start.objectId, object_id_end)"
+'!$ROUTE_LINK = "https://ul24.nastachku.ru/архитектура"
 
-note left: %load_json("/resources/inventory.json")
-
-gw -> strategy: [[https://nastachku.ru/ request POST api/v1/delivery-route]]
+gw -> strategy: [[$DELIVERY_ROUTE_LINK request POST $DELIVERY_ROUTE_NAME]]
 note left strategy #aqua
 заметка к **%autonumber%**
+'$var_json
 {
   "start": {
     "objectId": "msk"
@@ -42,10 +46,10 @@ end note
 activate strategy
 strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
 alt #TECHNOLOGY позитивный сценарий
-strategy -> geo_locator: [[$poligons.link request $poligons.endpoint (end.lat, end.lon)]]
+strategy -> geo_locator: [[$POLIGONS_LINK request $POLIGONS_NAME]]
 note left geo_locator #teal
 заметка к **%autonumber%**
-$poligons.endpoint/{lat}/{lon}
+api/v1/geopoligons/{lat}/{lon}
 end note
 
 activate geo_locator
@@ -61,10 +65,13 @@ note right geo_locator #teal
 end note
 deactivate geo_locator
 strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
+note right DB
+<img /resources/tables.png {scale=0.5}>
+end note
 activate DB
 DB-->strategy: return: object_id_end with MIN(priority)
 deactivate DB
-strategy->rm: [[https://ul24.nastachku.ru/архитектура request POST api/v1/route (start.objectId, object_id_end)]]
+strategy->rm: [[$ROUTE_LINK request $ROUTE_NAME ]]
 note left rm #coral
 заметка к **%autonumber%**
 {
@@ -80,7 +87,7 @@ note right rm #coral
       "stepNum": 1,
       "code": 1234,
       "objectIdEnd": "spb",
-      "objectIdEndType": "DISTRIBUTION_CENTER"
+      "objectEndType": "DISTRIBUTION_CENTER",
       "duration": 720
     }
   ]
@@ -98,28 +105,17 @@ note right strategy #aqua
   "route": [
     {
       "code": 1234,
-      "attributes": [
-        {
-          "code": "distribution_center_code",
-          "value": "spb"
-        },
-        {
-          "code": "distribution_center_type",
-          "value": "distribution-center"
-        }
-      ]
+      "stepNumber": 1,
+      "logObjectStart": "msk",
+      "logObjectEnd": "spb",
+      "controlDeliverytime": 720
     }
-  ],
-  "last_delivery_point": {
-    "dc_code": "spb",
-    "dc_type": "distribution-center"
-  },
-  "controlDeliverytime": 720
+  ]
 }
 end note
-strategy --> gw:  response POST api/v1/delivery-route  ответ 200
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  ответ 200
 else %lighten(IMPLEMENTATION, 5) маршрут не найден
-strategy --> gw:  response POST api/v1/delivery-route  404 "Not Found"
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  404 "Not Found"
 note right strategy #aqua
 заметка к **%autonumber%**
 {
@@ -127,18 +123,6 @@ note right strategy #aqua
 }
 end note
 end
-else #IMPLEMENTATION отсутствуют start.objectId || deliveryMethod
-strategy --> gw:  response POST api/v1/delivery-route  400 "BAD_REQUEST"
-note right strategy #aqua
-заметка к **%autonumber%**
-{
-  "error": "BAD_REQUEST",
-  "details": "<fieldname> is required"
-}
-end note
 
-else  %darken(IMPLEMENTATION, 5) отсутствуют координаты
-strategy --> gw:  response POST api/v1/delivery-route  400 "COORDINATES_ARE_REQUIRED"
-end
 deactivate strategy
 @enduml
