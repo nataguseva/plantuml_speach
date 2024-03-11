@@ -41,7 +41,7 @@ activate geo
 
 !startsub POLIGONS_RESPONSE_200
 alt $GREEN позитивный сценарий
-[<-- geo: return: array<poligon_id>, 200
+ return array<poligon_id>, 200
 note right geo
 комментарий к **%autonumber%**
 { "value": {
