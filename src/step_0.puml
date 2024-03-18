@@ -1,4 +1,4 @@
-@startuml
+geo_locator@startuml
 'https://plantuml.com/sequence-diagram
 autonumber
 
@@ -12,7 +12,6 @@ gw -> strategy: request POST api/v1/delivery-route
 
 activate strategy
 strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
-alt позитивный сценарий
 strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
 activate geo_locator
 geo_locator --> strategy: return: array<poligon_id>
@@ -32,6 +31,7 @@ strategy --> gw:  response POST api/v1/delivery-route  ответ 200
 else маршрут не найден
 strategy --> gw:  response POST api/v1/delivery-route  404 "ROUTE_NOT_FOUND"
 end
+
 
 deactivate strategy
 @enduml

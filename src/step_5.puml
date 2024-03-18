@@ -31,7 +31,6 @@ gw -> strategy: request POST api/v1/delivery-route
 'gw -> strategy: [[$DELIVERY_ROUTE_LINK request POST $DELIVERY_ROUTE_NAME]]
 'note left strategy #aqua
 'заметка к **%autonumber%**
-'$var_json
 '{
 '  "start": {
 '    "objectId": "msk"
@@ -47,7 +46,8 @@ gw -> strategy: request POST api/v1/delivery-route
 activate strategy
 strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
 'alt #TECHNOLOGY позитивный сценарий
-strategy -> geo_locator: [[$POLIGONS_LINK request $POLIGONS_NAME]]
+'strategy -> geo_locator: [[$POLIGONS_LINK request $POLIGONS_NAME]]
+strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
 'note left geo_locator #teal
 'заметка к **%autonumber%**
 'api/v1/geopoligons/{lat}/{lon}
@@ -70,9 +70,10 @@ strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
 '<img /resources/tables.png {scale=0.5}>
 'end note
 activate DB
-DB-->strategy: return: object_id_end with MIN(priority)
+DB-->strategy: return: object_id_end
 deactivate DB
-strategy->rm: [[$ROUTE_LINK request $ROUTE_NAME ]]
+'strategy->rm: [[$ROUTE_LINK request $ROUTE_NAME ]]
+strategy->rm: request POST api/v1/route (start.objectId, object_id_end)
 'note left rm #coral
 'заметка к **%autonumber%**
 '{
@@ -98,7 +99,8 @@ strategy->rm: [[$ROUTE_LINK request $ROUTE_NAME ]]
 activate rm
 rm-->strategy: return: route
 deactivate rm
-alt #TECHNOLOGY маршрут возвращен
+alt маршрут возвращен
+alt #palegreen маршрут возвращен
 strategy->strategy: взять route  преобразовать ответ к шаблону
 'note right strategy #aqua
 'заметка к **%autonumber%**
@@ -114,15 +116,18 @@ strategy->strategy: взять route  преобразовать ответ к �
 '  ]
 '}
 'end note
-strategy --> gw:  response $DELIVERY_ROUTE_NAME  ответ 200
-else %lighten(IMPLEMENTATION, 5) маршрут не найден
-strategy --> gw:  response $DELIVERY_ROUTE_NAME  404 "Not Found"
-note right strategy #aqua
-заметка к **%autonumber%**
-{
-  "error": "ROUTE_NOT_FOUND"
-}
-end note
+'strategy --> gw:  response $DELIVERY_ROUTE_NAME  ответ 200
+strategy --> gw:  response POST api/v1/delivery-route  ответ 200
+'else  маршрут не найден
+else #pink маршрут не найден
+strategy --> gw:  response POST api/v1/delivery-route  404 "ROUTE_NOT_FOUND"
+'strategy --> gw:  response $DELIVERY_ROUTE_NAME  404 "Not Found"
+'note right strategy #aqua
+'заметка к **%autonumber%**
+'{
+'  "error": "ROUTE_NOT_FOUND"
+'}
+'end note
 end
 
 deactivate strategy
