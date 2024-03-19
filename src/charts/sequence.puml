@@ -1,0 +1,78 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+autonumber 10 10
+mainframe "strategy POST api/v1/delivery-route"
+!include skinparams/skinparams.puml
+skinparam sequenceMessageAlign left
+skinparam maxmessagesize 450
+skinparam wrapWidth 250
+skinparam NoteFontColor green
+
+'participant service  as gw
+Actor client as gw #orchid
+participant strategy as strategy
+database strategy_db as DB
+
+box "External Service" #LightBlue
+participant geo_locator as geo_locator
+end box
+
+
+!includesub /variables/variables.puml !VARIABLES
+'!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
+'!$DELIVERY_ROUTE_LINK = "https://nastachku.ru/"
+
+'gw -> strategy: request POST api/v1/delivery-route
+'gw -> strategy: [[https://nastachku.ru/ request POST api/v1/delivery-route]]
+gw -> strategy: [[$DELIVERY_ROUTE_LINK request $DELIVERY_ROUTE_NAME]]
+note left strategy
+заметка к **%autonumber%**
+
+{
+  "start": {
+    "objectId": "msk"
+  },
+  "end": {
+    "kladr": "78",
+    "lat": 59.93123,
+    "lon": 30.31123
+  },
+  "deliveryMethod": "посылка"
+}
+end note
+activate strategy #coral
+autonumber stop
+autonumber 11
+strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
+activate strategy #skyblue
+autonumber 20 10
+alt #TECHNOLOGY позитивный сценарий
+
+deactivate strategy
+strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
+activate geo_locator
+geo_locator --> strategy: return: array<poligon_id>
+
+deactivate geo_locator
+strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
+note right DB
+[[/images/tables.png таблицы ]]
+<img /images/tables.png {scale=0.2}>
+end note
+activate DB
+DB-->strategy: return: route
+deactivate DB
+alt #palegreen маршрут возвращен
+strategy --> gw:  response  200
+else #pink маршрут не найден
+strategy --> gw:  response   404 "ROUTE_NOT_FOUND"
+end
+else #IMPLEMENTATION Запрос не прошел валидацию
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  400 "BAD_REQUEST"
+else %darken("#IMPLEMENTATION", 10) не прошла авторизация
+'strategy --> gw:  response POST api/v1/delivery-route  401 "UNAUTHORIZED"
+strategy --> gw:  response $DELIVERY_ROUTE_NAME  401 "UNAUTHORIZED"
+
+end
+deactivate strategy
+@enduml

@@ -1,7 +1,0 @@
-{
-  "endpoint": "/api/v1/poligons",
-  "link": "https://ul24.nastachku.ru/системный-и-бизнес-анализ",
-  "response_200_link": "/resources/poligons_response_200.json",
-  "response_empty_link": "/resources/poligons_response_empty.json"
-
-}

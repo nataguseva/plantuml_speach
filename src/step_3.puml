@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 autonumber
-!include /resources/skinparams.puml
+!include charts/skinparams/skinparams.puml
 'skinparam maxmessagesize 250
 'skinparam wrapWidth 350
 'skinparam BoxPadding 50

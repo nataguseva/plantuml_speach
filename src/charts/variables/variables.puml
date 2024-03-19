@@ -1,0 +1,8 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!startsub VARIABLES
+!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
+!$DELIVERY_ROUTE_LINK = "https://nastachku.ru/"
+!endsub
+foo->foo
+@enduml
