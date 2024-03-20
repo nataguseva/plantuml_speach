@@ -7,62 +7,68 @@ title Документирование интеграций в виде sequence
 * **доклад**
 left side
 ** **1**
-*** [[/images/about_me.png визитка]]
-**** <img:/images/about_me.png{scale=0.03}>
+*** [[/speach_images/about_me.png визитка]]
+**** <img:/speach_images/about_me.png{scale=0.03}>
 *** NextWayConf-2023
-**** [[/images/sheet.png sheet || pict]]
-***** <img:/images/sheet.png{scale=0.03}>
-**** [[/images/brain.png brain]]
-***** <img:/images/brain.png{scale=0.03}>
-**** [[/images/spiral.png cпиральная динамика]]
-***** <img:/images/spiral.png{scale=0.03}>
-**** [[/images/scrum.png ценности SCRUM]]
-***** <img:/images/scrum.png{scale=0.03}>
-*** [[/images/scrum.png а почему не Plant?]]
-**** <img:/images/plant.png{scale=0.03}>
+**** [[/speach_images/sheet.png sheet || pict]]
+***** <img:/speach_images/sheet.png{scale=0.03}>
+**** [[/speach_images/brain.png brain]]
+***** <img:/speach_images/brain.png{scale=0.03}>
+**** [[/speach_images/spiral.png cпиральная динамика]]
+***** <img:/speach_images/spiral.png{scale=0.03}>
+**** [[/speach_images/scrum.png ценности SCRUM]]
+***** <img:/speach_images/scrum.png{scale=0.03}>
+*** [[/speach_images/plant.png а почему не Plant?]]
+**** <img:/speach_images/plant.png{scale=0.03}>
 right side
 ** **2**
 *** инструменты
-**** draw.io \n <img:/images/draw_logo.jpeg{scale=0.10}>
-***** [[/images/draw.png холст]]
-****** <img:/images/draw.png{scale=0.03}>
-***** [[/images/draw_api.png api]]
-****** <img:/images/draw_api.png{scale=0.03}>
-***** [[/images/draw_plant.png draw || plant]]
-****** <img:/images/draw_plant.png{scale=0.03}>
+**** draw.io \n <img:/speach_images/draw_logo.jpeg{scale=0.10}>
+***** [[/speach_images/draw.png холст]]
+****** <img:/speach_images/draw.png{scale=0.03}>
+***** [[/speach_images/draw_api.png api]]
+****** <img:/speach_images/draw_api.png{scale=0.03}>
+***** [[/speach_images/draw_plant.png draw || plant]]
+****** <img:/speach_images/draw_plant.png{scale=0.03}>
 **** 1. PlantUML \n <img:http://plantuml.com/logo3.png{scale=0.5}>
 ***** [[https://plantuml.com/ru/ документация]]
 ****** **Арно Рокес:** \n"поддержание документации \nв актуальном состоянии"
+****** Инструмент с открытым исходным кодом, \n использующий простые текстовые описания \n для рисования UML-диаграмм
 *** строим sequence
 ****  **участники:** \n shape, box,\n alias, order
-***** [[/images/participants.png participants]]
-****** <img:/images/participants.png{scale=0.25}>
+***** [[/speach_images/participants.png participants]]
+****** <img:/speach_images/participants.png{scale=0.25}>
 
 ****  **сообщения:** \n autonumber, maxSize, \n lifeLine
-***** [[/images/message.png message]]
-****** <img:/images/message.png{scale=0.08}>
+***** [[/speach_images/message.png message]]
+****** <img:/speach_images/message.png{scale=0.08}>
 
-**** **заметки:** \n autonumber, \n left/right/over \n images/scale
-***** [[/images/note.png note]]
-****** <img:/images/note.png{scale=0.06}>
+**** **ссылки:** \n внешние, внутренние
+***** [[/speach_images/links.png links]]
+****** <img:/speach_images/links.png{scale=0.06}>
+
+**** **заметки:** \n autonumber, \n left/right/over \n images/scale \n ссылки
+***** [[/speach_images/note.png note]]
+****** <img:/speach_images/note.png{scale=0.06}>
 
 **** **фреймы:** alt/else, \n mainframe,\n %darken/%lighten
-***** [[/images/frame.png frame]]
-****** <img:/images/frame.png{scale=0.06}>
-
-**** **ссылки:** \n абсолютные, относительные
-***** [[/images/links.png links]]
-****** <img:/images/links.png{scale=0.06}>
+***** [[/speach_images/frame.png frame]]
+****** <img:/speach_images/frame.png{scale=0.06}>
 
 **** **переменные:** !includesub
-***** [[/images/variables.png variables]]
-****** <img:/images/variables.png{scale=0.06}>
+***** [[/speach_images/variables.png variables]]
+****** <img:/speach_images/variables.png{scale=0.06}>
 
 left side
-*** достоинства
-**** большое количество видов диаграмм
-**** большое количество интеграций (Confluence, plugins к IDE )
-**** подключаемые библиотеки
-
+*** **3**
+**** +
+***** [[/speach_images/many_charts.png МНОГО  видов диаграмм]]
+****** <img:/speach_images/many_charts.png{scale=0.06}>
+***** большое количество интеграций \n (Confluence, plugins к IDE )
+***** подключаемые библиотеки \n (Archimate, сетевая инфраструктура)
+***** git - версионирование, \n совместная работа, doc near code
+ **** -
+ ***** нельзя смешивать диаграммы
+ ***** не хватает функций \n для переиспользования логики других диаграмм
 
 @endmindmap
