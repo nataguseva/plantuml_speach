@@ -4,71 +4,72 @@ skinparam wrapWidth 1000
 
 title Документирование интеграций в виде sequence-диаграмм при помощи PlantUML
 
-* **доклад**
+*[#crimson] **СТАРТ**
 left side
-** **1**
+**[#yellow] **1**
 *** [[/speach_images/about_me.png визитка]]
 **** <img:/speach_images/about_me.png{scale=0.03}>
-*** NextWayConf-2023
-**** [[/speach_images/sheet.png sheet || pict]]
-***** <img:/speach_images/sheet.png{scale=0.03}>
-**** [[/speach_images/brain.png brain]]
-***** <img:/speach_images/brain.png{scale=0.03}>
-**** [[/speach_images/spiral.png cпиральная динамика]]
-***** <img:/speach_images/spiral.png{scale=0.03}>
-**** [[/speach_images/scrum.png ценности SCRUM]]
-***** <img:/speach_images/scrum.png{scale=0.03}>
-*** [[/speach_images/plant.png а почему не Plant?]]
-**** <img:/speach_images/plant.png{scale=0.03}>
+***[#plum] NextWayConf-2023
+****[#plum] [[/speach_images/sheet.png sheet || pict]]
+*****[#plum] <img:/speach_images/sheet.png{scale=0.03}>
+****[#plum] [[/speach_images/brain.png brain]]
+*****[#plum] <img:/speach_images/brain.png{scale=0.03}>
+'**** [[/speach_images/spiral.png cпиральная динамика]]
+'***** <img:/speach_images/spiral.png{scale=0.03}>
+'**** [[/speach_images/scrum.png ценности SCRUM]]
+'***** <img:/speach_images/scrum.png{scale=0.03}>
+****[#plum] [[/speach_images/plant.png а почему не Plant?]]
+*****[#plum] <img:/speach_images/plant.png{scale=0.03}>
 right side
-** **2**
-*** инструменты
-**** draw.io \n <img:/speach_images/draw_logo.jpeg{scale=0.10}>
-***** [[/speach_images/draw.png холст]]
-****** <img:/speach_images/draw.png{scale=0.03}>
-***** [[/speach_images/draw_api.png api]]
-****** <img:/speach_images/draw_api.png{scale=0.03}>
-***** [[/speach_images/draw_plant.png draw || plant]]
-****** <img:/speach_images/draw_plant.png{scale=0.03}>
-**** 1. PlantUML \n <img:http://plantuml.com/logo3.png{scale=0.5}>
-***** [[https://plantuml.com/ru/ документация]]
-****** **Арно Рокес:** \n"поддержание документации \nв актуальном состоянии"
-****** Инструмент с открытым исходным кодом, \n использующий простые текстовые описания \n для рисования UML-диаграмм
-*** строим sequence
-****  **участники:** \n shape, box,\n alias, order
-***** [[/speach_images/participants.png participants]]
-****** <img:/speach_images/participants.png{scale=0.25}>
+**[#yellow] **2**
+***[#steelBlue] инструменты
+****[#steelBlue] draw.io \n <img:/speach_images/draw_logo.jpeg{scale=0.10}>
+*****[#steelBlue] [[/speach_images/draw.png холст]]
+******[#steelBlue] <img:/speach_images/draw.png{scale=0.03}>
+'***** [[/speach_images/draw_api.png api]]
+'****** <img:/speach_images/draw_api.png{scale=0.03}>
+*****[#steelBlue] [[/speach_images/draw_plant.png draw || plant]]
+******[#steelBlue] <img:/speach_images/draw_plant.png{scale=0.03}>
+****[#steelBlue] PlantUML \n <img:http://plantuml.com/logo3.png{scale=0.5}>
+*****[#steelBlue] [[https://plantuml.com/ru/ документация]]
+'****** **Арно Рокес:** \n"поддержание документации \nв актуальном состоянии"
+******[#steelBlue] Инструмент с открытым исходным кодом, \n использующий простые текстовые описания \n для рисования UML-диаграмм
+***[#cyan] строим sequence
+****[#cyan]  **участники:** \n shape, box,\n alias, order
+*****[#cyan] [[/speach_images/participants.png participants]]
+******[#cyan] <img:/speach_images/participants.png{scale=0.25}>
 
-****  **сообщения:** \n autonumber, maxSize, \n lifeLine
-***** [[/speach_images/message.png message]]
-****** <img:/speach_images/message.png{scale=0.08}>
+****[#cyan]  **сообщения:** \n autonumber, maxSize, \n lifeLine
+*****[#cyan] [[/speach_images/message.png message]]
+******[#cyan] <img:/speach_images/message.png{scale=0.08}>
 
-**** **ссылки:** \n внешние, внутренние
-***** [[/speach_images/links.png links]]
-****** <img:/speach_images/links.png{scale=0.06}>
+'**** **ссылки:** \n внешние, внутренние
+'***** [[/speach_images/links.png links]]
+'****** <img:/speach_images/links.png{scale=0.06}>
 
-**** **заметки:** \n autonumber, \n left/right/over \n images/scale \n ссылки
-***** [[/speach_images/note.png note]]
-****** <img:/speach_images/note.png{scale=0.06}>
+****[#cyan] **заметки:** \n autonumber, \n left/right/over \n images/scale \n ссылки
+*****[#cyan] [[/speach_images/note.png note]]
+******[#cyan] <img:/speach_images/note.png{scale=0.06}>
 
-**** **фреймы:** alt/else, \n mainframe,\n %darken/%lighten
-***** [[/speach_images/frame.png frame]]
-****** <img:/speach_images/frame.png{scale=0.06}>
+****[#cyan] **фреймы:** alt/else, \n mainframe,\n %darken/%lighten
+*****[#cyan] [[/speach_images/frame.png frame]]
+******[#cyan] <img:/speach_images/frame.png{scale=0.06}>
 
-**** **переменные:** !includesub
-***** [[/speach_images/variables.png variables]]
-****** <img:/speach_images/variables.png{scale=0.06}>
+****[#cyan] **переменные:** \n!includesub
+*****[#cyan] [[/speach_images/variables.png variables]]
+******[#cyan] <img:/speach_images/variables.png{scale=0.06}>
 
 left side
-*** **3**
-**** +
-***** [[/speach_images/many_charts.png МНОГО  видов диаграмм]]
-****** <img:/speach_images/many_charts.png{scale=0.06}>
-***** большое количество интеграций \n (Confluence, plugins к IDE )
-***** подключаемые библиотеки \n (Archimate, сетевая инфраструктура)
-***** git - версионирование, \n совместная работа, doc near code
- **** -
- ***** нельзя смешивать диаграммы
- ***** не хватает функций \n для переиспользования логики других диаграмм
+**[#yellow] **3**
+***[#lime] **+**
+****[#lime] [[/speach_images/many_charts.png МНОГО  видов диаграмм]]
+*****[#lime] <img:/speach_images/many_charts.png{scale=0.06}>
+****[#lime] подключаемые библиотеки \n (Archimate, сетевая инфраструктура)
+****[#lime] git - версионирование, \n совместная работа, doc near code
+****[#lime] большое количество интеграций \n (Confluence, plugins к IDE )
+***[#tomato] **-**
+****[#tomato] в Confluence теряется интерактив
+****[#tomato] нельзя смешивать диаграммы
+****[#tomato] не хватает функций \n для переиспользования логики \nдругих диаграмм
 
 @endmindmap
