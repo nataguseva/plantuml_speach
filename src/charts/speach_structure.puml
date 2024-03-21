@@ -1,12 +1,12 @@
 @startmindmap
 'https://plantuml.com/mindmap-diagram
-skinparam wrapWidth 1000
+skinparam wrapWidth 200
 
-title Документирование интеграций в виде sequence-диаграмм при помощи PlantUML
+title <size:30> Документирование интеграций в виде sequence-диаграмм при помощи PlantUML
 
-*[#crimson] **СТАРТ**
+*[#crimson] <size:40> **СТАРТ**
 left side
-**[#yellow] **1**
+**[#yellow] <size:30> **intro**
 *** [[/speach_images/about_me.png визитка]]
 **** <img:/speach_images/about_me.png{scale=0.03}>
 ***[#plum] NextWayConf-2023
@@ -14,28 +14,24 @@ left side
 *****[#plum] <img:/speach_images/sheet.png{scale=0.03}>
 ****[#plum] [[/speach_images/brain.png brain]]
 *****[#plum] <img:/speach_images/brain.png{scale=0.03}>
-'**** [[/speach_images/spiral.png cпиральная динамика]]
-'***** <img:/speach_images/spiral.png{scale=0.03}>
-'**** [[/speach_images/scrum.png ценности SCRUM]]
-'***** <img:/speach_images/scrum.png{scale=0.03}>
-****[#plum] [[/speach_images/plant.png а почему не Plant?]]
-*****[#plum] <img:/speach_images/plant.png{scale=0.03}>
+
 right side
-**[#yellow] **2**
-***[#steelBlue] инструменты
+**[#yellow] <size:30>  **main**
+***[#steelBlue] <b> <size:20> инструменты
 ****[#steelBlue] draw.io \n <img:/speach_images/draw_logo.jpeg{scale=0.10}>
 *****[#steelBlue] [[/speach_images/draw.png холст]]
 ******[#steelBlue] <img:/speach_images/draw.png{scale=0.03}>
-'***** [[/speach_images/draw_api.png api]]
-'****** <img:/speach_images/draw_api.png{scale=0.03}>
-*****[#steelBlue] [[/speach_images/draw_plant.png draw || plant]]
-******[#steelBlue] <img:/speach_images/draw_plant.png{scale=0.03}>
+*****[#steelBlue] [[/speach_images/draw_api.png api]]
+******[#steelBlue] <img:/speach_images/draw_api.png{scale=0.03}>
+
+
 ****[#steelBlue] PlantUML \n <img:http://plantuml.com/logo3.png{scale=0.5}>
 *****[#steelBlue] [[https://plantuml.com/ru/ документация]]
-'****** **Арно Рокес:** \n"поддержание документации \nв актуальном состоянии"
 ******[#steelBlue] Инструмент с открытым исходным кодом, \n использующий простые текстовые описания \n для рисования UML-диаграмм
-***[#cyan] строим sequence
-****[#cyan]  **участники:** \n shape, box,\n alias, order
+******[#steelBlue] PlantUML + IDE + git = **СИЛА**
+
+***[#cyan] <b> <size:20> строим sequence
+****[#cyan]  **участники:** \n shape, box,\n alias
 *****[#cyan] [[/speach_images/participants.png participants]]
 ******[#cyan] <img:/speach_images/participants.png{scale=0.25}>
 
@@ -43,31 +39,28 @@ right side
 *****[#cyan] [[/speach_images/message.png message]]
 ******[#cyan] <img:/speach_images/message.png{scale=0.08}>
 
-'**** **ссылки:** \n внешние, внутренние
-'***** [[/speach_images/links.png links]]
-'****** <img:/speach_images/links.png{scale=0.06}>
-
 ****[#cyan] **заметки:** \n autonumber, \n left/right/over \n images/scale \n ссылки
 *****[#cyan] [[/speach_images/note.png note]]
 ******[#cyan] <img:/speach_images/note.png{scale=0.06}>
 
-****[#cyan] **фреймы:** alt/else, \n mainframe,\n %darken/%lighten
+****[#cyan] **фреймы:** alt/else, \n mainframe
 *****[#cyan] [[/speach_images/frame.png frame]]
 ******[#cyan] <img:/speach_images/frame.png{scale=0.06}>
 
 ****[#cyan] **переменные:** \n!includesub
 *****[#cyan] [[/speach_images/variables.png variables]]
 ******[#cyan] <img:/speach_images/variables.png{scale=0.06}>
-
+*****[#cyan] [[/speach_images/draw_plant.png draw || plant]]
+******[#cyan] <img:/speach_images/draw_plant.png{scale=0.03}>
 left side
-**[#yellow] **3**
-***[#lime] **+**
+**[#yellow] <size:30> **review**
+***[#lime]  <size:20> **+**
 ****[#lime] [[/speach_images/many_charts.png МНОГО  видов диаграмм]]
 *****[#lime] <img:/speach_images/many_charts.png{scale=0.06}>
 ****[#lime] подключаемые библиотеки \n (Archimate, сетевая инфраструктура)
 ****[#lime] git - версионирование, \n совместная работа, doc near code
 ****[#lime] большое количество интеграций \n (Confluence, plugins к IDE )
-***[#tomato] **-**
+***[#tomato] <size:20> **-**
 ****[#tomato] в Confluence теряется интерактив
 ****[#tomato] нельзя смешивать диаграммы
 ****[#tomato] не хватает функций \n для переиспользования логики \nдругих диаграмм

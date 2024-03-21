@@ -5,7 +5,7 @@ autonumber 10 10
 '!include skinparams/skinparams.puml
 skinparam sequenceMessageAlign left
 skinparam maxmessagesize 350
-skinparam wrapWidth 250
+'skinparam wrapWidth 250
 'skinparam NoteFontColor green
 
 
@@ -17,13 +17,13 @@ database strategy_db as DB
 box "External Service" #LightBlue
 participant geo_locator as geo_locator
 end box
-'!includesub /variables/variables.puml !VARIABLES
-!$DELIVERY_ROUTE_NAME = "GET api/v1/delivery-route"
-!$DELIVERY_ROUTE_LINK = "https://samokat.tech/"
+!includesub /variables/variables.puml !VARIABLES
+'!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
+'!$DELIVERY_ROUTE_LINK = "https://samokat.tech/"
 
 
-gw -> strategy: request POST api/v1/delivery-route
-gw -> strategy: [[https://plantuml.com/ru/color request POST api/v1/delivery-route]]
+'gw -> strategy: request POST api/v1/delivery-route
+'gw -> strategy: [[https://plantuml.com/ru/color request POST api/v1/delivery-route]]
 gw -> strategy: [[$DELIVERY_ROUTE_LINK request $DELIVERY_ROUTE_NAME]]
 note left strategy
 заметка к **%autonumber%**
@@ -40,35 +40,35 @@ note left strategy
   "deliveryMethod": "посылка"
 }
 end note
-activate strategy #coral
+'activate strategy #coral
 autonumber stop
 autonumber 11
-
+'
 strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
-activate strategy #skyblue
-
+'activate strategy #skyblue
+'
 autonumber 20 10
 alt #TECHNOLOGY позитивный сценарий
-
-deactivate strategy
+'
+'deactivate strategy
 strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
-activate geo_locator
+'activate geo_locator
 geo_locator --> strategy: return: array<poligon_id>
 
-deactivate geo_locator
+'deactivate geo_locator
 strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
 note right DB
 [[/images/tables.png таблицы ]]
 <img /chart_images/tables.png {scale=0.2}>
-'<img https://habrastorage.org/getpro/habr/upload_files/858/7c2/2d6/8587c22d66288f2ea50936b46c45b0cc.jpeg{scale=0.1}>
+'<img https://habrastorage.org/getpro/habr/upload_files/858/7c2/2d6/8587c22d66288f2ea50936b46c45b0cc.jpeg{scale=0.2}>
 end note
-activate DB
+'activate DB
 DB-->strategy: return: route
 note right strategy
 заметка к --%autonumber%--
 [[/jsons/delivery_route_response_200.json body]]
 end note
-deactivate DB
+'deactivate DB
 alt #palegreen маршрут возвращен
 strategy --> gw:  response  200
 else #pink маршрут не найден
@@ -77,5 +77,5 @@ end
 else #IMPLEMENTATION Запрос не прошел валидацию
 strategy --> gw:  response $DELIVERY_ROUTE_NAME  400 "BAD_REQUEST"
 end
-deactivate strategy
+'deactivate strategy
 @enduml
