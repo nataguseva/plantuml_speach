@@ -1,7 +1,8 @@
 @startuml
 ''https://plantuml.com/sequence-diagram
+!$DELIVERY_ROUTE_NAME = "POST api/v1/delivery-route"
 autonumber
-'mainframe "strategy POST api/v1/delivery-route"
+mainframe $DELIVERY_ROUTE_NAME
 '!include skinparams/skinparams.puml
 skinparam sequenceMessageAlign left
 skinparam maxmessagesize 350

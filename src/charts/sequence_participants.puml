@@ -10,12 +10,12 @@
 
 
 
-'participant api_gateway  as gw
-'participant strategy as strategy
-'participant strategy_db as DB
-''box "External Service" #LightBlue
-'participant geo_locator as geo_locator
-''end box
+Actor client  as gw
+participant strategy as strategy #orchid
+participant strategy_db as DB
+box "External Service" #LightBlue
+participant geo_locator as geo_locator
+end box
 
 
 '!includesub /variables/variables.puml !VARIABLES

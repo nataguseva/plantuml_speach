@@ -2,6 +2,6 @@
 'https://plantuml.com/sequence-diagram
 skinparam maxmessagesize 250
 skinparam wrapWidth 350
-skinparam BoxPadding 50
+skinparam BoxPadding 150
 skinparam NoteFontColor black
 @enduml

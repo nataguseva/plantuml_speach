@@ -52,7 +52,7 @@ geo_locator --> strategy: return: array<poligon_id>
 strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
 
 note right DB
-[[/images/tables.png таблицы ]]
+[[/chart_images/tables.png таблицы ]]
 <img /chart_images/tables.png {scale=0.2}>
 '<img https://habrastorage.org/getpro/habr/upload_files/858/7c2/2d6/8587c22d66288f2ea50936b46c45b0cc.jpeg{scale=0.2}>
 end note
