@@ -22,25 +22,23 @@ right side
 ****[#steelBlue] draw.io \n <img:/speach_images/draw_logo.jpeg{scale=0.10}>
 *****[#steelBlue] [[/speach_images/draw.png холст]]
 ******[#steelBlue] <img:/speach_images/draw.png{scale=0.03}>
-*****[#steelBlue] [[/speach_images/draw_api.png api]]
-******[#steelBlue] <img:/speach_images/draw_api.png{scale=0.03}>
-
 
 ****[#steelBlue] PlantUML \n <img:http://plantuml.com/logo3.png{scale=0.5}>
 *****[#steelBlue] [[https://plantuml.com/ru/ документация]]
 ******[#steelBlue] Инструмент с открытым исходным кодом, \n использующий простые текстовые описания \n для рисования UML-диаграмм
 ******[#steelBlue] PlantUML + IDE + git = **СИЛА**
-
+****[#steelBlue] [[/speach_images/draw_api.png api]]
+*****[#steelBlue] <img:/speach_images/draw_api.png{scale=0.03}>
 ***[#cyan] <b> <size:20> строим sequence
 ****[#cyan]  **участники:** \n shape, box,\n alias
 *****[#cyan] [[/speach_images/participants.png participants]]
 ******[#cyan] <img:/speach_images/participants.png{scale=0.25}>
 
-****[#cyan]  **сообщения:** \n autonumber, maxSize, \n lifeLine
+****[#cyan]  **сообщения:** \n autonumber, maxSize
 *****[#cyan] [[/speach_images/message.png message]]
 ******[#cyan] <img:/speach_images/message.png{scale=0.08}>
 
-****[#cyan] **заметки:** \n autonumber, \n left/right/over \n images/scale \n ссылки
+****[#cyan] **заметки:** \n autonumber, \n images/scale \n ссылки
 *****[#cyan] [[/speach_images/note.png note]]
 ******[#cyan] <img:/speach_images/note.png{scale=0.06}>
 
@@ -58,7 +56,6 @@ left side
 ***[#lime]  <size:20> **+**
 ****[#lime] [[/speach_images/many_charts.png МНОГО  видов диаграмм]]
 *****[#lime] <img:/speach_images/many_charts.png{scale=0.06}>
-****[#lime] подключаемые библиотеки \n (Archimate, сетевая инфраструктура)
 ****[#lime] git - версионирование, \n совместная работа, doc near code
 ****[#lime] большое количество интеграций \n (Confluence, plugins к IDE )
 ***[#tomato] <size:20> **-**
