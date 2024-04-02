@@ -7,7 +7,7 @@
 
 
 'autonumber
-'mainframe "strategy $DELIVERY_ROUTE_NAME"
+'mainframe "strategy POST api/v1/delivery-route"
 
 '!include skinparams/skinparams.puml
 'skinparam sequenceMessageAlign left
@@ -17,19 +17,16 @@
 
 
 
-participant api_gateway  as gw
-participant strategy as strategy
-participant strategy_db as DB
-'box "External Service" #LightBlue
-participant geo_locator as geo_locator
-'end box
+'participant api_gateway  as gw
+'participant strategy as strategy
+'participant strategy_db as DB
+''box "External Service" #LightBlue
+'participant geo_locator as geo_locator
+''end box
 
 
-
-
-
-gw -> strategy: request POST api/v1/delivery-route(start.objectId, end.lat, end.lon, deliveryMethod)
-'gw -> strategy: [[https://plantuml.com/ru/color request GET api/v1/delivery-route]]
+'gw -> strategy: request POST api/v1/delivery-route(start.objectId, end.lat, end.lon, deliveryMethod)
+''gw -> strategy: [[https://plantuml.com/ru/color request POST api/v1/delivery-route]]
 'note left strategy
 'заметка к **%autonumber%**
 '
@@ -49,38 +46,37 @@ gw -> strategy: request POST api/v1/delivery-route(start.objectId, end.lat, end.
 'autonumber stop
 'autonumber 11
 '
-'strategy->strategy: проверить запрос (обязательны  start.objectId, end.lat, end.lon, deliveryMethod)
+'strategy->strategy: проверить запрос (required  start.objectId, end.lat, end.lon, deliveryMethod)
 'activate strategy #skyblue
 '
 'autonumber 20 10
-'alt #TECHNOLOGY позитивный сценарий
+'alt #TECHNOLOGY Запрос POST api/v1/delivery-route прошел валидацию
 '
 'deactivate strategy
-strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
+'strategy -> geo_locator: request GET api/v1/geopoligons(end.lat, end.lon)
 'activate geo_locator
-geo_locator --> strategy: return: array<poligon_id>
-
+'geo_locator --> strategy: return: array<poligon_id>
 'deactivate geo_locator
-strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
+
+'strategy-> DB: SELECT (array<poligon_id>,  deliveryMethod)
 'note right DB
-'[[/chart_images/tables.png таблицы ]]
 '<img /chart_images/tables.png {scale=0.2}>
 ''<img https://habrastorage.org/getpro/habr/upload_files/858/7c2/2d6/8587c22d66288f2ea50936b46c45b0cc.jpeg{scale=0.2}>
 'end note
 'activate DB
-DB-->strategy: return: route
+'DB-->strategy: return: route
 'note right strategy
 'заметка к --%autonumber%--
 '[[/jsons/delivery_route_response_200.json body]]
 'end note
 'deactivate DB
-'alt #palegreen маршрут возвращен
-strategy --> gw:  response  200
+'alt #palegreen маршрут найден
+'strategy -[#green]-> gw:   response  200
 'else #pink маршрут не найден
-strategy --> gw:  response   404 "ROUTE_NOT_FOUND"
+'strategy --> gw:  <font color=red> response   404 "ROUTE_NOT_FOUND"
 'end
-'else #IMPLEMENTATION Запрос не прошел валидацию
-strategy --> gw:  response 400 "BAD_REQUEST"
+'else #IMPLEMENTATION Запрос POST api/v1/delivery-route не прошел валидацию
+'strategy -[#FF0000]-> gw: <font color=#8B0000> <b> response 400 "BAD_REQUEST"
 'end
 'deactivate strategy
 @enduml
